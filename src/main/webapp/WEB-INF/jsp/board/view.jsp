@@ -27,7 +27,7 @@
     내용: ${board.content }
 </div>
 <div>첨부파일 : <br>
-    <c:forEach items="${files}" var="file">
+    <c:forEach items="${board.fileList}" var="file">
         <p><img src="/board/download/${file.id}" alt="${file.originalName}"></p>
         <p><a href="/board/download/${file.id}">${file.originalName}</a></p>
     </c:forEach>

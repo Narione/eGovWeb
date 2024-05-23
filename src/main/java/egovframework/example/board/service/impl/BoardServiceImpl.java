@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -38,11 +39,15 @@ public class BoardServiceImpl implements BoardService {
 	public int insertBoard(BoardVO vo) {
 		mapper.insertBoard(vo);
 		// 글번호를 FileVO 리스트 안에 각각 넣어준다.
-		List<FileVO> fileList = vo.getFileList();
-		for(FileVO file : fileList) {
+		if(!vo.getFileList().isEmpty()){
+		List<FileVO> fileList = new ArrayList<>();
+		for(FileVO file : vo.getFileList()) {
 			file.setBoardNo(vo.getNo());
+			fileList.add(file);
 		}
 		fileMapper.saveFiles(fileList);
+
+		}
 		return vo.getNo();
 	}
 	@Override

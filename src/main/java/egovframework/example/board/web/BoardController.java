@@ -80,9 +80,7 @@ public class BoardController {
     @GetMapping("view")
     public String boardView(@RequestParam("no") int searchNo, Model model){
         BoardVO vo = service.getBoard(searchNo);
-        List<FileVO> files = fileService.selectFileList(searchNo);
         model.addAttribute("board", vo);
-        model.addAttribute("files", files);
         return "board/view";
     }
 
