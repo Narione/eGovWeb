@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.example.board.service.impl.BoardMapper">
+
+	<resultMap id="boardMap" type="boardVO">
+		<result property="no" column="no" />
+		<result property="writer" column="writer" />
+		<result property="title" column="title" />
+		<result property="content" column="content" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="hits" column="hits" />
+		<collection property="fileList" select="selectFileList" column="no" javaType="list" ofType="fileVO" />
+	</resultMap>
+
+
+	<select id="getBoardListCount" parameterType="searchVO" resultType="int">
+		select
+			count(*) cnt
+		from
+			board a
+			inner join member b on a.writer = b.id
+		<where>
+			<if test="searchType == 'title'">
+				title like '%' || #{searchWord} || '%'
+			</if>
+			<if test="searchType == 'content'">
+				content like '%' || #{searchWord} || '%'
+			</if>
+			<if test="searchType == 'writer'">
+				b.name like '%' || #{searchWord} || '%'
+			</if>
+		</where>
+	</select>
+	<select id="getBoardList" parameterType="searchVO" resultType="boardVO">
+		select
+			*
+		from
+		(
+			select
+				rownum rnum,
+				c.*
+			from
+			(					
+				select
+					a.no,
+					b.name writer,
+					a.title,
+					a.create_date,
+					a.hits
+				from
+					board a
+					inner join member b on a.writer = b.id
+				<where>
+					<if test="searchType == 'title'">
+						title like '%' || #{searchWord} || '%'
+					</if>
+					<if test="searchType == 'content'">
+						content like '%' || #{searchWord} || '%'
+					</if>
+					<if test="searchType == 'writer'">
+						b.name like '%' || #{searchWord} || '%'
+					</if>
+				</where>
+				order by a.create_date desc
+			) c
+		)
+		where rnum between #{firstRecordIndex} + 1 and #{lastRecordIndex}
+
+	</select>
+	<select id="getBoard" parameterType="int" resultMap="boardMap">
+		SELECT
+			A.NO,
+			B.NAME WRITER,
+			A.TITLE,
+			A.CONTENT,
+			A.CREATE_DATE,
+			A.MODIFY_DATE,
+			A.HITS
+		FROM
+			BOARD A
+			INNER JOIN MEMBER B ON A.WRITER = B.ID
+		WHERE
+ 			NO = #{no}
+	</select>
+
+	<select id = "selectFileList" parameterType="int" resultType="fileVO">
+        SELECT
+            ID,
+            BOARD_NO,
+            FILE_PATH,
+            FILE_NAME,
+            ORIGINAL_NAME,
+            FILE_SIZE,
+            CREATE_DATE
+        FROM
+            ATTACHED_FILE
+        WHERE
+            BOARD_NO = #{boardNo}
+        ORDER BY
+            ID
+    </select>
+
+
+
+	<insert id="insertBoard" parameterType="boardVO" useGeneratedKeys="true" keyColumn="no" keyProperty="no">
+		insert into board
+			(writer, title, content)
+		values
+			(#{writer}, #{title}, #{content})
+	</insert>
+	<update id="updateBoard" parameterType="boardVO">
+		update
+			board
+		set
+			title = #{title},
+			content = #{content},
+			modify_date = sysdate
+		where
+			no = #{no}
+	</update>
+	<update id="updateHits" parameterType="int">
+		UPDATE
+			BOARD
+		SET
+			HITS=HITS+1
+		WHERE
+			NO = #{no}
+	</update>
+	<delete id="deleteBoard" parameterType="int">
+		delete from
+			board
+		where
+			no = #{no}
+	</delete>
+</mapper>
