@@ -33,7 +33,7 @@ public class RegisterController {
     @PostMapping("step2")
     public String step2(boolean agree){
         log.debug("agree: {}", agree);
-//        System.out.println("agree:"+agree);
+        System.out.println("agree:"+agree);
         if(agree){
         return "register/step2";
         }
