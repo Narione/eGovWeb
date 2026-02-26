@@ -15,13 +15,15 @@ import egovframework.example.register.service.RegisterService;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
 @Controller
 @RequestMapping("/register/")
 @RequiredArgsConstructor
 @Slf4j
 public class RegisterController {
 //    private static final Logger logger = LoggerFactory.getLogger(RegisterController.class);
-
+	@Resource(name="registerService")
     private final RegisterService service;
 //    public RegisterController(RegisterService service) {
 //        this.service = service;
@@ -33,7 +35,7 @@ public class RegisterController {
     @PostMapping("step2")
     public String step2(boolean agree){
         log.debug("agree: {}", agree);
-        System.out.println("agree:"+agree);
+//        System.out.println("agree:"+agree);
         if(agree){
         return "register/step2";
         }

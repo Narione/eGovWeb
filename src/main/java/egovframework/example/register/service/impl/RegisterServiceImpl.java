@@ -3,6 +3,7 @@ package egovframework.example.register.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import egovframework.example.exception.DuplicateMemberException;
@@ -14,11 +15,14 @@ import egovframework.example.register.service.impl.RegisterMapper;
 import java.util.DuplicateFormatFlagsException;
 import java.util.List;
 
-@Service
+import javax.annotation.Resource;
+
+@Service("registerService")
 @Slf4j
 public class RegisterServiceImpl implements RegisterService {
 //    private static final Logger logger = LoggerFactory.getLogger(RegisterService.class);
-    private RegisterMapper mapper;
+    @Autowired
+	private RegisterMapper mapper;
 //    public RegisterServiceImpl(RegisterMapper mapper) {
 //        this.mapper = mapper;
 //    }

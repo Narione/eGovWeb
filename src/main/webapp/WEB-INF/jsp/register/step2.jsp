@@ -13,6 +13,7 @@
 <body>
 <h2>회원 정보 입력</h2>
 <form action="step3" method="post">
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <p>
         <label>아이디:
             <input type="text" name="id" id="id" value="${registerRequest.id}">
