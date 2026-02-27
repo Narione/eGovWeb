@@ -26,23 +26,15 @@ public class LoginController {
         return "common/login";
     }
 
-    @PostMapping("/login")
-    public String login(LoginRequest login, HttpSession session, Model model) {
-        Member member = service.findMember(login);
-        if (member == null) {
-            throw new MemberNotFoundException();
-        }
-        session.setAttribute("member", member);
-        return "redirect:/";
-
-
-//        if(member != null) {
-//            session.setAttribute("member", member);
-//            return "redirect:/index";
+//    @PostMapping("/login")
+//    public String login(LoginRequest login, HttpSession session, Model model) {
+//        Member member = service.findMember(login);
+//        if (member == null) {
+//            throw new MemberNotFoundException();
 //        }
-//        model.addAttribute("msg", "로그인 실패");
-//        return "common/login";
-    }
+//        session.setAttribute("member", member);
+//        return "redirect:/";
+//    }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
@@ -55,8 +47,6 @@ public class LoginController {
     @ResponseBody
     public Map<String, String> ajaxLogin(LoginRequest login, @RequestParam(required = false) String location, HttpSession session) {
 
-        // 성공할 경우 {"msg" : "success"}
-        // 실패할 경우 {"msg" : "failed"}
         log.debug("location: {}", location);
         HashMap<String, String> map = new HashMap<>();
         Member member = service.findMember(login);

@@ -22,31 +22,26 @@ import javax.annotation.Resource;
 @RequiredArgsConstructor
 @Slf4j
 public class RegisterController {
-//    private static final Logger logger = LoggerFactory.getLogger(RegisterController.class);
+
 	@Resource(name="registerService")
     private final RegisterService service;
-//    public RegisterController(RegisterService service) {
-//        this.service = service;
-//    }
-    @GetMapping("step1")
+
+	@GetMapping("step1")
     public String step1(){
         return "register/step1";
     }
+	
     @PostMapping("step2")
     public String step2(boolean agree){
         log.debug("agree: {}", agree);
-//        System.out.println("agree:"+agree);
         if(agree){
         return "register/step2";
         }
         return "redirect:/register/step1";
     }
+    
     @PostMapping("step3")
     public String step3(@ModelAttribute RegisterRequest register){
-//        System.out.println("이메일: "+register.getEmail());
-//        System.out.println("이름: "+register.getName());
-//        System.out.println("패스워드: "+register.getPassword());
-//        System.out.println("패스워드확인: "+register.getConfirmPassword());
         try {
             service.register(register);
             return "register/step3";
@@ -54,6 +49,7 @@ public class RegisterController {
             return "register/step2";
         }
     }
+    
     @GetMapping("list")
     public String selectAll(Model model) {
         List<Member> members = service.selectAll();

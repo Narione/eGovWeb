@@ -17,7 +17,8 @@
 </head>
 <body>
 <h2>로그인</h2>
-<form action="/login" method="post" id="loginForm">
+<!-- <form action="/login" method="post" id="loginForm"> -->
+<form id="loginForm">
     <label>아이디:
         <input type="text" name="username" value="${cookie.savedId.value }" placeholder="ID를 입력하세요.">
     </label>
