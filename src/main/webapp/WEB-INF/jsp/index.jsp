@@ -7,7 +7,7 @@
     <title>Index</title>
 </head>
 <body>
-인사말: ${greeting}<br />
+<%-- 인사말: ${greeting}<br /> --%>
 
 
 <%--현재 로그인 사용자: <sec:authentication property="principal.authorities" />--%>

@@ -31,7 +31,7 @@
     <input type="hidden" name="location" value=${location} />
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
     <div id="log">${msg}</div>
-    <button id='loginBtn' type="submit">로그인</button>
+    <button id='loginBtn' type="button">로그인</button>
     <button type="button">취소</button>
 </form>
 <script>
@@ -39,6 +39,7 @@
     // FormData 활용
     let formData = new FormData(loginForm)
     document.querySelector("#loginBtn").addEventListener("click", evt => {
+    	
         let formData = new FormData(loginForm);
         //javascript에서 지원하는 FormData는 multipart/form-data 형식으로 전송
         //header와 body가 아닌 payload를 통해 전달함
@@ -51,9 +52,10 @@
                     if(data.msg === "failure"){
                         document.querySelector("#log").textContent="로그인 실패!"
                     }else{
-                        location.href =data.msg;
+                    	console.log(data.msg);
+                    	location.href =data.msg;
                     }
-                    console.log(data.msg)})
+                })
     })
 </script>
 </body>
