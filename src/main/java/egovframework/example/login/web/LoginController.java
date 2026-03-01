@@ -8,12 +8,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -61,9 +65,9 @@ public class LoginController {
         // 2. 스프링 시큐리티 전용 인증 토큰 생성
         // (member.getUserId(), password, 권한리스트 순서)
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                member.getUserId(), 
-                null, // 비밀번호는 이미 위에서 검증했으므로 null 처리 가능
-                List.of(new SimpleGrantedAuthority("ROLE_USER")) // 사용자의 실제 권한을 넣으세요
+                member
+                ,null// 비밀번호는 이미 위에서 검증했으므로 null 처리 가능
+                ,List.of(new SimpleGrantedAuthority("ROLE_USER")) // 사용자의 실제 권한을 넣으세요
         );
 
         // 3. SecurityContext에 인증 정보 강제 등록 (이걸 해야 jsp sec 태그가 작동함)
@@ -71,8 +75,8 @@ public class LoginController {
         context.setAuthentication(token);
 
         // 4. 세션에 SecurityContext 저장 (로그인 상태 유지)
-        HttpSession session = request.getSession(true);
-        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+//        session = request.getSession(true);
+//        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
         
         // 기존 세션 유지 (선택 사항)
         session.setAttribute("member", member);

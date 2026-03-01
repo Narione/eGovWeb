@@ -16,9 +16,18 @@
     <p><a href="<c:url value="/login"/>">로그인</a></p>
 </sec:authorize>
 <!-- 로그인 한 상태 -->
+
+
 <sec:authorize access="isAuthenticated()">
     <form action="/logout" method="post">
-        <sec:authentication property="principal.username" />님 안녕하세요.
+    
+    	<!-- 1. principal 객체를 'user'라는 이름의 변수로 담기 -->
+<%-- 		<sec:authentication property="principal" var="user" /> --%>
+
+		<!-- 2. 일반적인 JSP EL 표현식으로 필드 접근 -->
+<%-- 		${user}님 안녕하세요. (ID: ${user}) --%>
+    
+        <sec:authentication property="principal.name" />님 안녕하세요.
 <%--        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">--%>
         <sec:csrfInput/>
         <p><button type="submit">로그아웃</button></p>
